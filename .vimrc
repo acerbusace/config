@@ -21,7 +21,6 @@ endif
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/vimfiles/bundle/Vundle.vim/
-silent execute '!vim +PluginInstall +qall'
 
 if installVundle == 1
   " doesn't work, cmd hangs
@@ -37,14 +36,14 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-commentary'
 
-" Plugin 'scrooloose/syntastic' " syntax checking plugin
-" Plugin 'Shougo/deoplete.nvim' " auto complete plugin
 " Plugin 'tpope/vim-fugitive' " git plugin
 
 Plugin 'vim-airline/vim-airline'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
+
+" Enable filetype plugins
 filetype plugin indent on " required for vundle
 
 " Brief help
@@ -81,10 +80,6 @@ filetype plugin indent on " required for vundle
 " Sets how many lines of history VIM has to remember
 set history=500
 
-" Enable filetype plugins
-filetype plugin on
-filetype indent on
-
 " detect when a file is changed
 set autoread
 
@@ -118,58 +113,58 @@ else
     set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 endif
 
-"Always show current position
+" always show current position
 set ruler
 
 " enables the number line
 set nu 
 
-" Height of the command bar
+" height of the command bar
 set cmdheight=2
 
-" Toggle between normal and relative numbering.
+" toggle between normal and relative numbering.
 nnoremap <leader>r :call NumberToggle()<cr>
 
-" A buffer becomes hidden when it is abandoned
+" a buffer becomes hidden when it is abandoned
 set hid
 
-" Configure backspace so it acts as it should act
+" configure backspace so it acts as it should act
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
 
-" Ignore case when searching
+" ignore case when searching
 set ignorecase
 
-" When searching try to be smart about cases 
+" when searching try to be smart about cases 
 set smartcase
 
-" Highlight search results
+" highlight search results
 set hlsearch
 
-" Makes search act like search in modern browsers
+" makes search act like search in modern browsers
 set incsearch 
 
 " disable search highlighting until next search bye pressing <esc>
 nnoremap <esc> :noh<return><esc>
 
-" Don't redraw while executing macros (good performance config)
+" don't redraw while executing macros (good performance config)
 set lazyredraw 
 
-" For regular expressions turn magic on
+" for regular expressions turn magic on
 set magic
 
-" Show matching brackets when text indicator is over them
+" show matching brackets when text indicator is over them
 set showmatch 
-" How many tenths of a second to blink when matching brackets
+" how many tenths of a second to blink when matching brackets
 set mat=2
 
-" No annoying sound on errors
+" no annoying sound on errors
 set noerrorbells
 set novisualbell
 set t_vb=
 set tm=500
 
-" Add a bit extra margin to the left
+" add a bit extra margin to the left
 " set foldcolumn=1
 
 
@@ -197,7 +192,9 @@ endif
 set encoding=utf8
 
 " Set GUI font
-set gfn=Consolas:h11:cANSI:qDRAFT    
+if has('win32') || has('win64')
+  set gfn=Consolas:h11:cANSI:qDRAFT    
+endif
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
@@ -223,13 +220,9 @@ set shiftwidth=2 " number of columns text is indented with the reindent operatio
 set tabstop=2 " number of columns a tab counts for
 set softtabstop=2 " number of columns when the tab key is pressed
 
-" Linebreak on 500 characters
-" set lbr
-" set tw=500
-
-set ai "Auto indent
-set si "Smart indent
-set wrap "Wrap lines
+set ai " auto indent
+set si " smart indent
+set wrap " wrap lines
 
 
 """"""""""""""""""""""""""""""
@@ -237,17 +230,18 @@ set wrap "Wrap lines
 """"""""""""""""""""""""""""""
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
-vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+" vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+" vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" causes nerd tree split opening problem
 " Horizontal split below current
-set splitbelow
+" set splitbelow
 " Vertical split to right of current
-set splitright
+" set splitright
 
 " Smart way to move between windows
 map <C-j> <C-W>j
@@ -270,9 +264,6 @@ map <C-l> <C-W>l
 " map <leader>tc :tabclose<cr>
 " map <leader>tm :tabmove 
 " map <leader>t<leader> :tabnext 
-
-" Switch CWD to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " Specify the behavior when switching between buffers 
 try
@@ -314,12 +305,12 @@ map 0 ^
 " vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
 " vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
-if has("mac") || has("macunix")
-  nmap <D-j> <M-j>
-  nmap <D-k> <M-k>
-  vmap <D-j> <M-j>
-  vmap <D-k> <M-k>
-endif
+" if has("mac") || has("macunix")
+  " nmap <D-j> <M-j>
+  " nmap <D-k> <M-k>
+  " vmap <D-j> <M-j>
+  " vmap <D-k> <M-k>
+" endif
 
 " Delete trailing white space on save, useful for Python and CoffeeScript ;)
 func! DeleteTrailingWS()
@@ -335,7 +326,7 @@ autocmd BufWrite *.coffee :call DeleteTrailingWS()
 " => Misc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remove the Windows ^M - when the encodings gets messed up
-noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+" noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " Quickly open a buffer for scribble
 " map <leader>q :e ~/buffer<cr>
@@ -419,32 +410,9 @@ endfunction
 """"""""""""""""""""""""""""""
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
-vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+" vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+" vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Moving around, tabs, windows and buffers
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Horizontal split below current
-set splitbelow
-" Vertical split to right of current
-set splitright
-
-" Disable highlight when <leader><cr> is pressed
-map <silent> <leader><cr> :noh<cr>
-
-" Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-
-" neovim bug: Crl-h is hard mapped to Backspace
-" hard mapping Backspace to Crl-w-h: 
-
-" Make VIM remember position in file after reopen
-" if has("autocmd")
-"   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-"endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Configure Plugins
@@ -480,26 +448,3 @@ map <c-f> :CtrlP<cr>
 
 let g:ctrlp_max_height = 20
 let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Syntastic
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Deoplete
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" let g:deoplete#enable_at_startup=1
-" deoplete tab-complete
-" inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-
-" autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
