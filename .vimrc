@@ -1,7 +1,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Load Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" auto install vundle
 " skip initialization for vim-tiny or vim-small
 if 0 | endif
 
@@ -12,22 +11,31 @@ filetype off " required for vundle
 
 let installVundle = 0
 if has("win32") || has("win64")
+  " auto install vundle, if not found
   let readme = expand('~/vimfiles/bundle/Vundle.vim/README.md')
   if !filereadable(readme)
     let installVundle = 1
     silent execute '!git clone https://github.com/VundleVim/Vundle.vim.git ' . expand('~/vimfiles/bundle/Vundle.vim')
   endif
-endif
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/vimfiles/bundle/Vundle.vim/
+  " set the runtime path to include Vundle and initialize
+  set rtp+=~/vimfiles/bundle/Vundle.vim/
+else
+  " set the runtime path to include Vundle and initialize
+  set rtp+=~/.vim/bundle/Vundle.vim/
+endif
 
 if installVundle == 1
   " doesn't work, cmd hangs
   " silent execute '!vim +PluginInstall +qall'
 endif
 
-call vundle#begin(expand('~/vimfiles/bundle/'))
+let bundle = expand('~/.vim/bundle/')
+if has("win32") || has("win64")
+  let bundle = expand('~/vimfiles/bundle/')
+endif
+
+call vundle#begin(bundle)
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
