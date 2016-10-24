@@ -1,14 +1,31 @@
-set nocompatible " be iMproved, required
-filetype off " required
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Load Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let installVundle = 0
+
+" auto install vundle
+if has("win32") || has("win64")
+  " let readme = expand('~/vimfiles/bundle/vundle/README.md')
+  " if !filereadable(readme)
+  if installVundle == 1
+    silent execute '!git clone https://github.com/VundleVim/Vundle.vim.git ' . expand('~/vimfiles/bundle/Vundle.vim')
+  endif
+endif
+
+" required for vundle
+set nocompatible " be iMproved
+filetype plugin indent on
+filetype off
+
 " set the runtime path to include Vundle and initialize
-set rtp+=M:/vimfiles/bundle/Vundle.vim/
-call vundle#begin('M:/vimfiles/bundle/')
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+set rtp+=~/vimfiles/bundle/Vundle.vim/
+
+
+call vundle#begin(expand('~/vimfiles/bundle/'))
+
+if installVundle == 1
+  " !PluginInstall
+endif
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
@@ -16,21 +33,16 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-commentary'
-" syntax checking plugin
-Plugin 'scrooloose/syntastic'
-" auto complete plugin
-" Plugin 'Shougo/deoplete.nvim'
-" git plugin
-" Plugin 'tpope/vim-fugitive'
+
+" Plugin 'scrooloose/syntastic' " syntax checking plugin
+" Plugin 'Shougo/deoplete.nvim' " auto complete plugin
+" Plugin 'tpope/vim-fugitive' " git plugin
 
 Plugin 'vim-airline/vim-airline'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
+
 " Brief help
 " :PluginList       - lists configured plugins
 " :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
@@ -76,6 +88,9 @@ set autoread
 " like <leader>w saves the current file
 let mapleader = ","
 let g:mapleader = ","
+
+" Fast saving
+nmap <leader>w :w!<cr>
 
 " :W sudo saves the file 
 " (useful for handling the permission-denied error)
@@ -463,17 +478,17 @@ let g:ctrlp_max_height = 20
 let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Syntastic
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
