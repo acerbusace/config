@@ -1,9 +1,16 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Load Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let installVundle = 0
-
 " auto install vundle
+" skip initialization for vim-tiny or vim-small
+if 0 | endif
+
+if &compatible
+  set nocompatible " be iMproved, required for vundle
+endif
+filetype off " required for vundle
+
+let installVundle = 0
 if has("win32") || has("win64")
   let readme = expand('~/vimfiles/bundle/Vundle.vim/README.md')
   if !filereadable(readme)
@@ -12,20 +19,16 @@ if has("win32") || has("win64")
   endif
 endif
 
-" required for vundle
-set nocompatible " be iMproved
-filetype plugin indent on
-filetype off
-
 " set the runtime path to include Vundle and initialize
 set rtp+=~/vimfiles/bundle/Vundle.vim/
-
-
-call vundle#begin(expand('~/vimfiles/bundle/'))
+silent execute '!vim +PluginInstall +qall'
 
 if installVundle == 1
-  " !PluginInstall
+  " doesn't work, cmd hangs
+  " silent execute '!vim +PluginInstall +qall'
 endif
+
+call vundle#begin(expand('~/vimfiles/bundle/'))
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
@@ -42,6 +45,7 @@ Plugin 'vim-airline/vim-airline'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
+filetype plugin indent on " required for vundle
 
 " Brief help
 " :PluginList       - lists configured plugins
