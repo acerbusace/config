@@ -5,9 +5,9 @@ let installVundle = 0
 
 " auto install vundle
 if has("win32") || has("win64")
-  " let readme = expand('~/vimfiles/bundle/vundle/README.md')
-  " if !filereadable(readme)
-  if installVundle == 1
+  let readme = expand('~/vimfiles/bundle/Vundle.vim/README.md')
+  if !filereadable(readme)
+    let installVundle = 1
     silent execute '!git clone https://github.com/VundleVim/Vundle.vim.git ' . expand('~/vimfiles/bundle/Vundle.vim')
   endif
 endif
