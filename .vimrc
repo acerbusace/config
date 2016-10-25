@@ -1,5 +1,5 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Load Plugins
+" => Setup Vundle -> Load Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " skip initialization for vim-tiny or vim-small
 if 0 | endif
@@ -9,30 +9,32 @@ if &compatible
 endif
 filetype off " required for vundle
 
-let installVundle = 0
-if has("win32") || has("win64")
-  " auto install vundle, if not found
-  let readme = expand('~/vimfiles/bundle/Vundle.vim/README.md')
-  if !filereadable(readme)
-    let installVundle = 1
-    silent execute '!git clone https://github.com/VundleVim/Vundle.vim.git ' . expand('~/vimfiles/bundle/Vundle.vim')
-  endif
-
-  " set the runtime path to include Vundle and initialize
-  set rtp+=~/vimfiles/bundle/Vundle.vim/
-else
-  " set the runtime path to include Vundle and initialize
-  set rtp+=~/.vim/bundle/Vundle.vim/
+let bundle = expand('~/.vim/bundle/')
+if has('win32') || has('win64')
+  let bundle = expand('~/vimfiles/bundle/')
 endif
+
+let installVundle = 0
+let vundle = expand(bundle . 'Vundle.vim/')
+let readme = expand(vundle . 'README.md')
+
+" auto install vundle, if not found
+if !filereadable(readme)
+  silent !git --version
+  if v:shell_error == 0
+    let installVundle = 1
+    let gitVundle = 'https://github.com/VundleVim/Vundle.vim.git'
+    silent execute '!git clone ' . gitVundle . ' ' . vundle
+  endif
+endif
+
+" set the runtime path to include Vundle and initialize
+let &rtp = &rtp . ',' . vundle
+" set rtp+=~/vimfiles/bundle/Vundle.vim/
 
 if installVundle == 1
-  " doesn't work, cmd hangs
-  " silent execute '!vim +PluginInstall +qall'
-endif
-
-let bundle = expand('~/.vim/bundle/')
-if has("win32") || has("win64")
-  let bundle = expand('~/vimfiles/bundle/')
+  " opens up cmd vim to ':PluginInstall'
+  silent !vim +PluginInstall +qall
 endif
 
 call vundle#begin(bundle)
@@ -115,7 +117,7 @@ set wildmenu
 
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
-if has("win16") || has("win32")
+if has('win32') || has ('win64')
     set wildignore+=.git\*,.hg\*,.svn\*
 else
     set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
@@ -220,7 +222,7 @@ set noswapfile
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Use spaces instead of tabs
+" use spaces instead of tabs
 set expandtab
 
 " 1 tab == 2 spaces
@@ -236,8 +238,7 @@ set wrap " wrap lines
 """"""""""""""""""""""""""""""
 " => Visual mode related
 """"""""""""""""""""""""""""""
-" Visual mode pressing * or # searches for the current selection
-" Super useful! From an idea by Michael Naumann
+" visual mode pressing * or # searches for the current selection
 " vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 " vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
@@ -246,48 +247,48 @@ set wrap " wrap lines
 " => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " causes nerd tree split opening problem
-" Horizontal split below current
+" horizontal split below current
 " set splitbelow
-" Vertical split to right of current
+" vertical split to right of current
 " set splitright
 
-" Smart way to move between windows
+" smart way to move between windows
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-" Close the current buffer
+" close the current buffer
 " map <leader>bd :Bclose<cr>:tabclose<cr>gT
 
-" Close all the buffers
+" close all the buffers
 " map <leader>ba :bufdo bd<cr>
 
 " map <leader>l :bnext<cr>
 " map <leader>h :bprevious<cr>
 
-" Useful mappings for managing tabs
+" useful mappings for managing tabs
 " map <leader>tn :tabnew<cr>
 " map <leader>to :tabonly<cr>
 " map <leader>tc :tabclose<cr>
 " map <leader>tm :tabmove 
 " map <leader>t<leader> :tabnext 
 
-" Specify the behavior when switching between buffers 
+" specify the behavior when switching between buffers 
 try
   set switchbuf=useopen,usetab,newtab
   set stal=2
 catch
 endtry
 
-" Return to last edit position when opening files (You want this!)
+" return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 
 """"""""""""""""""""""""""""""
 " => Status line
 """"""""""""""""""""""""""""""
-" Always show the status line
+" always show the status line
 set laststatus=2
 
 " enables airline
@@ -304,10 +305,7 @@ let g:airline_right_sep=''
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Remap VIM 0 to first non-blank character
-map 0 ^
-
-" Move a line of text using ALT+[jk] or Command+[jk] on mac
+" move a line of text using ALT+[jk] or Command+[jk] on mac
 " nmap <M-j> mz:m+<cr>`z
 " nmap <M-k> mz:m-2<cr>`z
 " vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
@@ -320,7 +318,7 @@ map 0 ^
   " vmap <D-k> <M-k>
 " endif
 
-" Delete trailing white space on save, useful for Python and CoffeeScript ;)
+" delete trailing white space on save, useful for Python and CoffeeScript ;)
 func! DeleteTrailingWS()
   exe "normal mz"
   %s/\s\+$//ge
@@ -333,16 +331,16 @@ autocmd BufWrite *.coffee :call DeleteTrailingWS()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Misc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Remove the Windows ^M - when the encodings gets messed up
+" remove the Windows ^M - when the encodings gets messed up
 " noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
-" Quickly open a buffer for scribble
+" quickly open a buffer for scribble
 " map <leader>q :e ~/buffer<cr>
 
-" Quickly open a markdown buffer for scribble
+" quickly open a markdown buffer for scribble
 " map <leader>x :e ~/buffer.md<cr>
 
-" Toggle paste mode on and off
+" toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
 
 
@@ -373,7 +371,7 @@ function! VisualSelection(direction, extra_filter) range
 endfunction
 
 
-" Returns true if paste mode is enabled
+" returns true if paste mode is enabled
 function! HasPaste()
     if &paste
         return 'PASTE MODE  '
@@ -381,7 +379,7 @@ function! HasPaste()
     return ''
 endfunction
 
-" Don't close window, when deleting a buffer
+" don't close window, when deleting a buffer
 command! Bclose call <SID>BufcloseCloseIt()
 function! <SID>BufcloseCloseIt()
    let l:currentBufNum = bufnr("%")
@@ -402,7 +400,7 @@ function! <SID>BufcloseCloseIt()
    endif
 endfunction
 
-" Relative numbering
+" relative numbering
 function! NumberToggle()
   if(&relativenumber == 1)
     set nornu
@@ -411,15 +409,6 @@ function! NumberToggle()
     set rnu
   endif
 endfunction
-
-
-""""""""""""""""""""""""""""""
-" => Visual mode related
-""""""""""""""""""""""""""""""
-" Visual mode pressing * or # searches for the current selection
-" Super useful! From an idea by Michael Naumann
-" vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-" vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
