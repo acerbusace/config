@@ -1,4 +1,21 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Sections:
+"    -> Setup Vundle -> Load Plugins
+"    -> General
+"    -> VIM user interface
+"    -> Colors and Fonts
+"    -> Files, backups and undo
+"    -> Text, tab and indent related
+"    -> Visual mode related
+"    -> Moving around, tabs, windows and buffers
+"    -> Status line
+"    -> Editing mappings
+"    -> Misc
+"    -> Helper functions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Setup Vundle -> Load Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " skip initialization for vim-tiny or vim-small
@@ -51,6 +68,7 @@ Plugin 'tpope/vim-commentary'
 Plugin 'vim-airline/vim-airline'
 
 " All of your Plugins must be added before the following line
+
 call vundle#end()            " required
 
 " Enable filetype plugins
@@ -64,24 +82,6 @@ filetype plugin indent on " required for vundle
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Sections:
-"    -> General
-"    -> VIM user interface
-"    -> Colors and Fonts
-"    -> Files and backups
-"    -> Text, tab and indent related
-"    -> Visual mode related
-"    -> Moving around, tabs and buffers
-"    -> Status line
-"    -> Editing mappings
-"    -> vimgrep searching and cope displaying
-"    -> Spell checking
-"    -> Misc
-"    -> Helper functions
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
