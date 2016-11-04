@@ -31,7 +31,7 @@ if has('win32') || has('win64')
   let bundle = expand('~/vimfiles/bundle/')
 endif
 
-let installVundle = 0
+let vundleInstalled = 0
 let vundle = expand(bundle . 'Vundle.vim/')
 let readme = expand(vundle . 'README.md')
 
@@ -39,37 +39,42 @@ let readme = expand(vundle . 'README.md')
 if !filereadable(readme)
   silent !git --version
   if v:shell_error == 0
-    let installVundle = 1
     let gitVundle = 'https://github.com/VundleVim/Vundle.vim.git'
     silent execute '!git clone ' . gitVundle . ' ' . vundle
+
+    " opens up cmd vim to ':PluginInstall', if no errors occured while
+    " installing vundle
+    if v:shell_error == 0
+      let vundleInstalled = 1
+      silent !vim +PluginInstall +qall
+    endif
   endif
+else
+  let vundleInstalled = 1
 endif
 
-" set the runtime path to include Vundle and initialize
-let &rtp = &rtp . ',' . vundle
-" set rtp+=~/vimfiles/bundle/Vundle.vim/
+if vundleInstalled == 1
+  " set the runtime path to include Vundle and initialize
+  let &rtp = &rtp . ',' . vundle
+  " set rtp+=~/vimfiles/bundle/Vundle.vim/
 
-if installVundle == 1
-  " opens up cmd vim to ':PluginInstall'
-  silent !vim +PluginInstall +qall
+  call vundle#begin(bundle)
+
+  " let Vundle manage Vundle, required
+  Plugin 'VundleVim/Vundle.vim'
+
+  Plugin 'scrooloose/nerdtree'
+  Plugin 'ctrlpvim/ctrlp.vim'
+  Plugin 'tpope/vim-commentary'
+
+  " Plugin 'tpope/vim-fugitive' " git plugin
+
+  Plugin 'vim-airline/vim-airline'
+
+  " All of your Plugins must be added before the following line
+
+  call vundle#end()            " required
 endif
-
-call vundle#begin(bundle)
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-Plugin 'scrooloose/nerdtree'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'tpope/vim-commentary'
-
-" Plugin 'tpope/vim-fugitive' " git plugin
-
-Plugin 'vim-airline/vim-airline'
-
-" All of your Plugins must be added before the following line
-
-call vundle#end()            " required
 
 " Enable filetype plugins
 filetype plugin indent on " required for vundle
@@ -192,10 +197,17 @@ set background=dark
 
 " Set extra options when running in GUI mode
 if has("gui_running")
-    set guioptions-=T
+    set guioptions-=m " remove menu bar
+    set guioptions-=T " remove tool bar
+    set guioptions-=r " remove right-hand scroll bar
+    set guioptions-=L " remove left-hand scroll bar
     set guioptions-=e
     set t_Co=256
     set guitablabel=%M\ %t
+
+    " toggles the menu bar
+    nnoremap <C-F2> :if &go=~#'m'<Bar>set go-=m<Bar>else<Bar>set go+=m<Bar>endif<CR>
+
 endif
 
 " Set utf8 as standard encoding and en_US as the standard language
@@ -335,7 +347,7 @@ autocmd BufWrite *.coffee :call DeleteTrailingWS()
 " noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " quickly open a buffer for scribble
-" map <leader>q :e ~/buffer<cr>
+map <leader>q :e ~/buffer<cr>
 
 " quickly open a markdown buffer for scribble
 " map <leader>x :e ~/buffer.md<cr>
