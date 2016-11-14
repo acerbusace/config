@@ -37,17 +37,14 @@ let readme = expand(vundle . 'README.md')
 
 " auto install vundle, if not found
 if !filereadable(readme)
-  silent !git --version
-  if v:shell_error == 0
-    let gitVundle = 'https://github.com/VundleVim/Vundle.vim.git'
-    silent execute '!git clone ' . gitVundle . ' ' . vundle
+  let gitVundle = 'https://github.com/VundleVim/Vundle.vim.git'
+  silent execute '!git clone ' . gitVundle . ' ' . vundle
 
-    " opens up cmd vim to ':PluginInstall', if no errors occured while
-    " installing vundle
-    if v:shell_error == 0
-      let vundleInstalled = 1
-      silent !vim +PluginInstall +qall
-    endif
+  " opens up cmd vim to ':PluginInstall', if no errors occured while
+  " installing vundle
+  if v:shell_error == 0
+    let vundleInstalled = 1
+    silent !vim +PluginInstall +qall
   endif
 else
   let vundleInstalled = 1
