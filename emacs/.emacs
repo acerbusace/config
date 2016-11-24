@@ -77,7 +77,7 @@
 (load-theme 'tango-dark) ; loads the specified theme
 
 (show-paren-mode 1) ; highlights matching parenthesis
-(linum-mode 1) ; disables the scroll bar
+;; (linum-mode 1) ; shows line numbers on the left side of the buffer
 (tool-bar-mode -1) ; disables the tool bar
 (scroll-bar-mode -1) ; disables the scroll bar
 
