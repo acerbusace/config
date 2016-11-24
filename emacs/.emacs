@@ -4,13 +4,14 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 ;; add mepla to the package-archives list
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+;; (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/")) ; bleeding-edge melpa package repository
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/")) ; stable melpa package repository
 (package-initialize)
 
 
 ;; use-package
 ;;-------------
-(unless (package-installed-p 'use-package) ; installs use-package 
+(unless (package-installed-p 'use-package) ; installs use-package
   (package-refresh-contents)
   (package-install 'use-package))
 
@@ -46,11 +47,11 @@
 
 (use-package helm-projectile
   :init
-  (setq projectile-indexing-method 'alien) ; force windows to use external indexing
+  ;; (setq projectile-indexing-method 'alien) ; force windows to use external indexing (causes freezes)
   ;; after hlem-projectile-switch-project finishes execution, call helm-projectile-find-file (instead of projectile's version)
   (setq projectile-switch-project-action 'helm-projectile-find-file)
   :config
-  (projectile-global-mode) ; make projectile automatically rememeber projects that you access files in
+  (projectile-mode) ; make projectile automatically rememeber projects that you access files in
   (setq projectile-completion-system 'helm) ; use helm for projectile's completion system
   (helm-projectile-on)) ; enables helm-projectile (override projectile commands)
 
@@ -64,11 +65,23 @@
       (highlight-parentheses-mode t)))
   (global-highlight-parentheses-mode t))
 
+(use-package flycheck
+  :init
+  (global-flycheck-mode))
+
+(use-package auto-complete
+  :init
+  (global-auto-complete-mode 1))
+
 ;;------------------------------------------------------------------------------
 ;; General
 ;;------------------------------------------------------------------------------
-(setq inhibit-startup-screen t)
+(setq inhibit-startup-screen t) ; disable startup screen
+
 (setq-default indent-tabs-mode nil) ; TAB inserts SPACE's
+
+(setq auto-save-default nil); disable auto save
+(setq make-backup-files nil) ; disable backup
 
 
 ;;------------------------------------------------------------------------------
@@ -78,6 +91,7 @@
 
 (show-paren-mode 1) ; highlights matching parenthesis
 ;; (linum-mode 1) ; shows line numbers on the left side of the buffer
+(menu-bar-mode -1) ; disables the menu bar
 (tool-bar-mode -1) ; disables the tool bar
 (scroll-bar-mode -1) ; disables the scroll bar
 
@@ -92,7 +106,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (helm evil use-package))))
+ '(package-selected-packages (quote (auto-complete flycheck helm evil use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
