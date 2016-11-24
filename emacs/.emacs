@@ -65,13 +65,13 @@
       (highlight-parentheses-mode t)))
   (global-highlight-parentheses-mode t))
 
-(use-package flycheck
+(use-package flycheck ;; syntax checker
   :init
-  (global-flycheck-mode))
+  (global-flycheck-mode)) ; enables global-flycheck-mode
 
-(use-package auto-complete
+(use-package auto-complete ;; adds auto-completion
   :init
-  (global-auto-complete-mode 1))
+  (global-auto-complete-mode 1)) ; enables global-auto-completion-mode
 
 ;;------------------------------------------------------------------------------
 ;; General
