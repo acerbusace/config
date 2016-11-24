@@ -54,6 +54,16 @@
   (setq projectile-completion-system 'helm) ; use helm for projectile's completion system
   (helm-projectile-on)) ; enables helm-projectile (override projectile commands)
 
+;; highlightes matching parentheses specific colors when cursor is inside
+(use-package highlight-parentheses
+  :config
+  ;; creates a global mode for highlight-parentheses-mode and enables it
+  (define-globalized-minor-mode global-highlight-parentheses-mode
+    highlight-parentheses-mode
+    (lambda ()
+      (highlight-parentheses-mode t)))
+  (global-highlight-parentheses-mode t))
+
 ;;------------------------------------------------------------------------------
 ;; General
 ;;------------------------------------------------------------------------------
@@ -66,6 +76,8 @@
 ;;------------------------------------------------------------------------------
 (load-theme 'tango-dark) ; loads the specified theme
 
+(show-paren-mode 1) ; highlights matching parenthesis
+(linum-mode 1) ; disables the scroll bar
 (tool-bar-mode -1) ; disables the tool bar
 (scroll-bar-mode -1) ; disables the scroll bar
 
@@ -86,4 +98,3 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
