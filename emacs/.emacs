@@ -71,7 +71,8 @@
 
 (use-package auto-complete ;; adds auto-completion
   :init
-  (global-auto-complete-mode 1)) ; enables global-auto-completion-mode
+  ;; (global-auto-complete-mode 1) ; enables global-auto-completion-mode
+  )
 
 ;;------------------------------------------------------------------------------
 ;; General
