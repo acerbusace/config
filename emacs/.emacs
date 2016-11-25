@@ -4,8 +4,8 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 ;; add mepla to the package-archives list
-;; (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/")) ; bleeding-edge melpa package repository
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/")) ; stable melpa package repository
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/")) ; bleeding-edge melpa package repository
 (package-initialize)
 
 
@@ -18,16 +18,19 @@
 ;; loads use-package
 (eval-when-compile
   (require 'use-package))
-  (setq use-package-always-ensure t) ;; auto install any packages not installed
 
 
 ;; install required packages
 ;;---------------------------
 (use-package evil ; evil - adds vim-like functionality (vim-mode)
+  :ensure t ;; auto install package
+  :pin melpa ;; dependence (goto-chr) does not exists in melpa stable repository, so use melpa instead
   :config
   (evil-mode 1))
+
 (use-package helm-config ; completely changed tab completion (kill-ring, buffers, find-file)
-  :ensure helm
+  :ensure helm ;; auto install package
+  :pin melpa-stable
   :init
   (setq helm-M-x-fuzzy-match   t ; optional fuzzy matching for helm-M-x
    helm-buffers-fuzzy-matching t ; optional fuzzy matching for helm-mini
@@ -46,6 +49,8 @@
   (helm-mode 1))
 
 (use-package helm-projectile
+  :ensure t ;; auto install package
+  :pin melpa-stable
   :init
   ;; (setq projectile-indexing-method 'alien) ; force windows to use external indexing (causes freezes)
   ;; after hlem-projectile-switch-project finishes execution, call helm-projectile-find-file (instead of projectile's version)
@@ -54,6 +59,19 @@
   (projectile-mode) ; make projectile automatically rememeber projects that you access files in
   (setq projectile-completion-system 'helm) ; use helm for projectile's completion system
   (helm-projectile-on)) ; enables helm-projectile (override projectile commands)
+
+(use-package flycheck ;; syntax checker
+  :ensure t ;; auto install package
+  :pin melpa-stable
+  :init
+  (global-flycheck-mode)) ; enables global-flycheck-mode
+
+(use-package auto-complete ;; adds auto-completion
+  :ensure t ;; auto install package
+  :pin melpa-stable
+  :init
+  ;; (global-auto-complete-mode 1) ; enables global-auto-completion-mode
+  )
 
 ;; highlightes matching parentheses specific colors when cursor is inside
 (use-package highlight-parentheses
@@ -65,14 +83,6 @@
       (highlight-parentheses-mode t)))
   (global-highlight-parentheses-mode t))
 
-(use-package flycheck ;; syntax checker
-  :init
-  (global-flycheck-mode)) ; enables global-flycheck-mode
-
-(use-package auto-complete ;; adds auto-completion
-  :init
-  ;; (global-auto-complete-mode 1) ; enables global-auto-completion-mode
-  )
 
 ;;------------------------------------------------------------------------------
 ;; General
@@ -102,15 +112,3 @@
 ;;------------------------------------------------------------------------------
 ;; Custom - created when installing plugins
 ;;------------------------------------------------------------------------------
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (auto-complete flycheck helm evil use-package))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
