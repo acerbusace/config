@@ -26,34 +26,55 @@
 (use-package evil ; evil - adds vim-like functionality (vim-mode)
   :ensure t ;; auto install package
   :pin melpa ;; dependence (goto-chr) does not exists in melpa stable, so use melpa repository instead
+  :diminish undo-tree-mode
   :config
   (evil-mode 1))
 
-(use-package ivy
-  :ensure t
+;; overhauls search, also includes ivy (completion system)
+(use-package swiper
+  :ensure t ;; auto install package
   :pin melpa-stable
+  :diminish ivy-mode
   :init
-  (ivy-mode 1)
+  (ivy-mode 1) ;; enable ivy-mode (use ivy completion anywhere completing-read-function is used)
   :bind
   ;; ivy-based interface to standard commands
   (("C-s" . swiper)
-   ;; ("M-x" . counsel-M-x)
-   ("C-x C-f" . counsel-find-file)
-   ("C-h f" . counsel-describe-function)
-   ("C-h v" . counsel-describe-variable)
-   ;; ("<f1> l" . counsel-load-library)
-   ("C-h S" . counsel-info-lookup-symbol)
-   ;; ("f2> l" . counsel-unicode-char)
-   ;; ivy-based interface to sheel and system tools
-   ;; ("C-c g" . counsel-git)
-   ;; ("C-c j" . counsel-git-grep)
-   ;; ("C-c k" . counsel-ag)
-   ;; ("C-x l" . counsel-locate)
-   ;; ("C-S-o" . counsel-rhytmbox)
    ("C-c C-r" . ivy-resume)) ; resumes the last ivy-based completion
   :config
-  (setq ivy-use-virtual-buffers t
-        ivy-count-format "(%d/%d) "))
+  (setq ivy-use-virtual-buffers t ;; add recent files to buffers list
+        ivy-count-format "(%d/%d) ")
+  (use-package counsel ;; contains all counsel* functions which use ivy completion
+    :ensure t ;; auto install package
+    :pin melpa-stable
+    :bind
+    ;; ivy-based interface to standard commands
+    (("C-s" . swiper)
+     ("M-x" . counsel-M-x)
+     ("C-x C-f" . counsel-find-file)
+     ("C-h f" . counsel-describe-function)
+     ("C-h v" . counsel-describe-variable)
+     ;; ("<f1> l" . counsel-load-library)
+     ("C-h S" . counsel-info-lookup-symbol)
+     ;; ("f2> l" . counsel-unicode-char)
+     ;; ivy-based interface to sheel and system tools
+     ;; ("C-c g" . counsel-git)
+     ;; ("C-c j" . counsel-git-grep)
+     ;; ("C-c k" . counsel-ag)
+     ;; ("C-x l" . counsel-locate)
+    ))
+  )
+
+(use-package projectile
+  :ensure t
+  :pin melpa-stable
+  :diminish projectile-mode
+  :init
+  (projectile-global-mode 1) ;; make projectile automatically remember projects who's files have been accessed
+  :config
+  (setq projectile-completion-system 'ivy)
+  ;; (setq projectile-indexing-method 'alien) ; force windows to use external indexing (git, etc; can cause issues)
+  )
 
 ;; (use-package helm ; completely changed tab completion (kill-ring, buffers, find-file)
 ;;   :ensure t ;; auto install package
@@ -89,7 +110,6 @@
 ;;     :ensure t ;; auto install package
 ;;     :pin melpa-stable
 ;;     :init
-;;     ;; (setq projectile-indexing-method 'alien) ; force windows to use external indexing (causes freezes)
 ;;     ;; after hlem-projectile-switch-project finishes execution, call helm-projectile-find-file (instead of projectile's version)
 ;;     (setq projectile-switch-project-action 'helm-projectile-find-file)
 ;;     :config
@@ -100,7 +120,6 @@
 (use-package flycheck ;; syntax checker
   :ensure t ;; auto install package
   :pin melpa-stable
-  :diminish global-flycheck-mode
   :config
   (global-flycheck-mode)) ; enables global-flycheck-mode
 
@@ -109,8 +128,8 @@
   :pin melpa-stable
   :config
   (require 'auto-complete-config)
-  (setq ac-auto-start 2
-        ac-delay 2)
+  ;; (setq ac-auto-start 2
+  ;;      ac-delay 2)
   (ac-config-default)) ; enables global-auto-completion-mode and set defautls
 
 (use-package rainbow-delimiters
@@ -170,7 +189,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (auto-complete flycheck helm-projectile helm evil use-package))))
+    (rainbow-delimiters auto-complete flycheck counsel swiper evil use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
