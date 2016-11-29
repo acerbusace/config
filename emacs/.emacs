@@ -36,21 +36,12 @@
   :pin melpa-stable
   :diminish ivy-mode
   :init
-  (ivy-mode 1) ;; enable ivy-mode (use ivy completion anywhere completing-read-function is used)
-  :bind
-  ;; ivy-based interface to standard commands
-  (("C-s" . swiper)
-   ("C-c C-r" . ivy-resume)) ; resumes the last ivy-based completion
-  :config
-  (setq ivy-use-virtual-buffers t ;; add recent files to buffers list
-        ivy-count-format "(%d/%d) ")
   (use-package counsel ;; contains all counsel* functions which use ivy completion
     :ensure t ;; auto install package
     :pin melpa-stable
     :bind
     ;; ivy-based interface to standard commands
-    (("C-s" . swiper)
-     ("M-x" . counsel-M-x)
+    (("M-x" . counsel-M-x)
      ("C-x C-f" . counsel-find-file)
      ("C-h f" . counsel-describe-function)
      ("C-h v" . counsel-describe-variable)
@@ -63,6 +54,14 @@
      ;; ("C-c k" . counsel-ag)
      ;; ("C-x l" . counsel-locate)
     ))
+  (ivy-mode 1) ;; enable ivy-mode (use ivy completion anywhere completing-read-function is used)
+  :bind
+  ;; ivy-based interface to standard commands
+  (("C-s" . swiper)
+   ("C-c C-r" . ivy-resume)) ; resumes the last ivy-based completion
+  :config
+  (setq ivy-use-virtual-buffers t ;; add recent files to buffers list
+        ivy-count-format "(%d/%d) ")
   )
 
 (use-package projectile
@@ -189,7 +188,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (rainbow-delimiters auto-complete flycheck counsel swiper evil use-package))))
+    (rainbow-delimiters auto-complete flycheck projectile counsel swiper evil use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
