@@ -87,8 +87,8 @@
 ;;         helm-M-x-requires-pattern nil
 ;;         helm-ff-skip-boring-files t ; hide files defined by helm-boring-file-regexp-list
 ;;         helm-boring-file-regexp-list
-;;         '("\\.git$" "\\.hg$" "\\.svn$" "\\.CVS$" "\\._darcs$" "\\.la$" "\\.o$" "~$"
-;;           "\\.so$" "\\.a$" "\\.elc$" "\\.fas$" "\\.fasl$" "\\.pyc$" "\\.pyo$")
+;;         '("//.git$" "//.hg$" "//.svn$" "//.CVS$" "//._darcs$" "//.la$" "//.o$" "~$"
+;;           "//.so$" "//.a$" "//.elc$" "//.fas$" "//.fasl$" "//.pyc$" "//.pyo$")
 
 ;;         helm-M-x-fuzzy-match   t ; optional fuzzy matching for helm-M-x
 ;;         ;; optional fuzzy matching for helm-mini
@@ -135,6 +135,19 @@
   :ensure t ;; auto install package
   :pin melpa-stable
   :config
+  ;; use more saturated colors
+  (require 'cl-lib)
+  (require 'color)
+  (cl-loop
+   for index from 1 to rainbow-delimiters-max-face-count
+   do
+   (let ((face (intern (format "rainbow-delimiters-depth-%d-face" index))))
+     (cl-callf color-saturate-name (face-foreground face) 30)))
+  ;; unmatched parens are displayed in bold red and with a strike through
+  (set-face-attribute 'rainbow-delimiters-unmatched-face nil
+                      :foreground 'unspecified
+                      :inherit 'error
+                      :strike-through t)
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 ;; highlightes matching parentheses specific colors when cursor is inside
@@ -154,44 +167,44 @@
 ;;------------------------------------------------------------------------------
 (setq inhibit-startup-screen t) ; disable startup screen
 
-(setq-default indent-tabs-mode nil) ; TAB inserts SPACE's
-
 (setq auto-save-default nil); disable auto save
-(setq make-backup-files nil) ; disable backup
+;; (setq make-backup-files nil) ; disable backup
+;; stop littering everywhere with save files, put them somewhere
+(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+
+(desktop-save-mode 1) ;; remember what I had open when I quit
+
+(setq-default indent-tabs-mode nil) ; TAB inserts SPACE's
+(fset 'yes-or-no-p 'y-or-n-p) ; changes all yes/no questions to y/n type
+;; delete trailing white-space from entire buffer before saving
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; path to python.exe
+(setq python-shell-interpreter "C:/cis/cots/Python27/ArcGIS10.3/python.exe")
+
+;; list all plugins installed
+;; (with-temp-file "packages.txt" (insert (format "%S" package-activated-list)))
+
 
 ;;------------------------------------------------------------------------------
 ;; Keybindings
 ;;------------------------------------------------------------------------------
-(global-set-key (kbd "C-!") 'shell) ;; '<CTRL> + !' opens up shell
+(global-set-key (kbd "C-!") 'shell) ; opens up the default shell
 
 ;;------------------------------------------------------------------------------
 ;; Theme
 ;;------------------------------------------------------------------------------
 (load-theme 'tango-dark) ; loads the specified theme
 
-(show-paren-mode 1) ; highlights matching parenthesis
-;; (linum-mode 1) ; shows line numbers on the left side of the buffer
 (menu-bar-mode -1) ; disables the menu bar
 (tool-bar-mode -1) ; disables the tool bar
 (scroll-bar-mode -1) ; disables the scroll bar
 
-;; (with-temp-file "packages.txt" (insert (format "%S" package-activated-list)))
+(show-paren-mode 1) ; highlights matching parenthesis
+(column-number-mode 1) ; display column/row of cursor in mode-line
+;; (linum-mode 1) ; shows line numbers on the left side of the buffer
 
 
 ;;------------------------------------------------------------------------------
 ;; Custom - created when installing plugins
 ;;------------------------------------------------------------------------------
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (rainbow-delimiters auto-complete flycheck projectile counsel swiper evil use-package))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
