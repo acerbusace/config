@@ -3,7 +3,7 @@
 ;;------------------------------------------------------------------------------
 (require 'package)
 (setq package-enable-at-startup nil)
-;; add mepla to the package-archives list
+;; add mepla repositories to the package-archives list
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/")) ; stable melpa package repository
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/")) ; bleeding-edge melpa package repository
 (package-initialize)
@@ -42,6 +42,7 @@
     :bind
     ;; ivy-based interface to standard commands
     (("M-x" . counsel-M-x)
+     ;; ("C-y" . counsel-yank-pop)
      ("C-x C-f" . counsel-find-file)
      ("C-h f" . counsel-describe-function)
      ("C-h v" . counsel-describe-variable)
@@ -76,10 +77,11 @@
   )
 
 (use-package flycheck ; syntax checker
-  :ensure t ;; auto install package
+  :ensure t ; auto install package
   :pin melpa-stable
   :config
-  (global-flycheck-mode)) ; enables global-flycheck-mode
+  ;; (global-flycheck-mode) ; enables global-flycheck-mode
+  (add-hook 'prog-mode-hook #'flycheck-mode) ; enable flycheck-mode on any programming language)
 
 (use-package auto-complete ; adds auto-completion
   :ensure t ; auto install package
@@ -107,7 +109,7 @@
                       :foreground 'unspecified
                       :inherit 'error
                       :strike-through t)
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)) ; enable rainbow-delimiters-mode on any programming language
 
 
 ;;------------------------------------------------------------------------------
@@ -120,7 +122,7 @@
 ;; stop littering everywhere with save files, put them somewhere
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
-(desktop-save-mode 1) ; remember what I had open when I quit
+;; (desktop-save-mode 1) ; remember what I had open when I quit
 
 (setq-default indent-tabs-mode nil) ; TAB inserts SPACE's
 (fset 'yes-or-no-p 'y-or-n-p) ; changes all yes/no questions to y/n type
@@ -150,9 +152,8 @@
 
 (show-paren-mode 1) ; highlights matching parenthesis
 (column-number-mode 1) ; display column/row of cursor in mode-line
-;; (linum-mode 1) ; shows line numbers on the left side of the buffer
 
-(add-hook 'prog-mode-hook #'linum-mode)
+(add-hook 'prog-mode-hook #'linum-mode) ; shows line numbers on the left side of the buffer
 
 ;;------------------------------------------------------------------------------
 ;; Custom - created when installing plugins
