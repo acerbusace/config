@@ -18,26 +18,26 @@
 ;; loads use-package
 (eval-when-compile
   (require 'use-package)
-  (require 'diminish) ;; if you use :diminish
-  (require 'bind-key)) ;; if you use any :bind variant
+  (require 'diminish) ; if you use :diminish
+  (require 'bind-key)) ; if you use any :bind variant
 
 ;; install required packages
 ;;---------------------------
 (use-package evil ; evil - adds vim-like functionality (vim-mode)
-  :ensure t ;; auto install package
-  :pin melpa ;; dependence (goto-chr) does not exists in melpa stable, so use melpa repository instead
+  :ensure t ; auto install package
+  :pin melpa ; dependence (goto-chr) does not exists in melpa stable, so use melpa repository instead
   :diminish undo-tree-mode
   :config
   (evil-mode 1))
 
 ;; overhauls search, also includes ivy (completion system)
 (use-package swiper
-  :ensure t ;; auto install package
+  :ensure t ; auto install package
   :pin melpa-stable
   :diminish ivy-mode
   :init
-  (use-package counsel ;; contains all counsel* functions which use ivy completion
-    :ensure t ;; auto install package
+  (use-package counsel ; contains all counsel* functions which use ivy completion
+    :ensure t ; auto install package
     :pin melpa-stable
     :bind
     ;; ivy-based interface to standard commands
@@ -54,13 +54,13 @@
      ;; ("C-c k" . counsel-ag)
      ;; ("C-x l" . counsel-locate)
     ))
-  (ivy-mode 1) ;; enable ivy-mode (use ivy completion anywhere completing-read-function is used)
+  (ivy-mode 1) ; enable ivy-mode (use ivy completion anywhere completing-read-function is used)
   :bind
   ;; ivy-based interface to standard commands
   (("C-s" . swiper)
    ("C-c C-r" . ivy-resume)) ; resumes the last ivy-based completion
   :config
-  (setq ivy-use-virtual-buffers t ;; add recent files to buffers list
+  (setq ivy-use-virtual-buffers t ; add recent files to buffers list
         ivy-count-format "(%d/%d) ")
   )
 
@@ -69,61 +69,20 @@
   :pin melpa-stable
   :diminish projectile-mode
   :init
-  (projectile-global-mode 1) ;; make projectile automatically remember projects who's files have been accessed
+  (projectile-global-mode 1) ; make projectile automatically remember projects who's files have been accessed
   :config
   (setq projectile-completion-system 'ivy)
   ;; (setq projectile-indexing-method 'alien) ; force windows to use external indexing (git, etc; can cause issues)
   )
 
-;; (use-package helm ; completely changed tab completion (kill-ring, buffers, find-file)
-;;   :ensure t ;; auto install package
-;;   :pin melpa-stable
-;;   :diminish helm-mode
-;;   :init
-;;   (require 'helm-config) ; setup helm (keybindings, etc...)
-;;   (setq helm-idle-delay       0.0 ; update fast sources immediately
-;;         helm-input-idle-delay 0.01 ; update fast sources immediately
-;;         helm-quick-update     t ; do not display invisible candidates
-;;         helm-M-x-requires-pattern nil
-;;         helm-ff-skip-boring-files t ; hide files defined by helm-boring-file-regexp-list
-;;         helm-boring-file-regexp-list
-;;         '("//.git$" "//.hg$" "//.svn$" "//.CVS$" "//._darcs$" "//.la$" "//.o$" "~$"
-;;           "//.so$" "//.a$" "//.elc$" "//.fas$" "//.fasl$" "//.pyc$" "//.pyo$")
-
-;;         helm-M-x-fuzzy-match   t ; optional fuzzy matching for helm-M-x
-;;         ;; optional fuzzy matching for helm-mini
-;;         helm-buffers-fuzzy-matching t
-;;         helm-recentf-fuzzy-match    t)
-;;     (helm-mode)
-;;   :bind (("M-x" . helm-M-x)
-;;          ("M-y" . helm-show-kill-ring)
-;;          ("C-x b" . helm-mini)
-;;          ("C-x C-f" . helm-find-files)
-;;          ("C-x r b" . helm-bookmarks)
-;; 	 :map helm-map
-;;          ("<tab>" . helm-execute-persistent-action) ; rebind tab to do persistent action
-;;          ;; ("C-i" . helm-execute-persistent-action) ; make TAB work in terminal
-;;          ("C-z" . helm-select-action)) ; list actions using C-z
-;;   :config
-;;   (use-package helm-projectile
-;;     :ensure t ;; auto install package
-;;     :pin melpa-stable
-;;     :init
-;;     ;; after hlem-projectile-switch-project finishes execution, call helm-projectile-find-file (instead of projectile's version)
-;;     (setq projectile-switch-project-action 'helm-projectile-find-file)
-;;     :config
-;;     (projectile-mode) ; make projectile automatically rememeber projects that you access files in
-;;     (setq projectile-completion-system 'helm) ; use helm for projectile's completion system
-;;     (helm-projectile-on))) ; enables helm-projectile (override projectile commands)
-
-(use-package flycheck ;; syntax checker
+(use-package flycheck ; syntax checker
   :ensure t ;; auto install package
   :pin melpa-stable
   :config
   (global-flycheck-mode)) ; enables global-flycheck-mode
 
-(use-package auto-complete ;; adds auto-completion
-  :ensure t ;; auto install package
+(use-package auto-complete ; adds auto-completion
+  :ensure t ; auto install package
   :pin melpa-stable
   :config
   (require 'auto-complete-config)
@@ -132,7 +91,7 @@
   (ac-config-default)) ; enables global-auto-completion-mode and set defautls
 
 (use-package rainbow-delimiters
-  :ensure t ;; auto install package
+  :ensure t ; auto install package
   :pin melpa-stable
   :config
   ;; use more saturated colors
@@ -150,17 +109,6 @@
                       :strike-through t)
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
-;; highlightes matching parentheses specific colors when cursor is inside
-;; (use-package highlight-parentheses
-  ;; :config
-  ;; creates a global mode for highlight-parentheses-mode and enables it
-  ;; (define-globalized-minor-mode global-highlight-parentheses-mode
-  ;;   highlight-parentheses-mode
-  ;;   (lambda ()
-  ;;     (highlight-parentheses-mode t)))
-  ;; (global-highlight-parentheses-mode t)
-  ;; )
-
 
 ;;------------------------------------------------------------------------------
 ;; General
@@ -172,7 +120,7 @@
 ;; stop littering everywhere with save files, put them somewhere
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
-(desktop-save-mode 1) ;; remember what I had open when I quit
+(desktop-save-mode 1) ; remember what I had open when I quit
 
 (setq-default indent-tabs-mode nil) ; TAB inserts SPACE's
 (fset 'yes-or-no-p 'y-or-n-p) ; changes all yes/no questions to y/n type
@@ -204,6 +152,7 @@
 (column-number-mode 1) ; display column/row of cursor in mode-line
 ;; (linum-mode 1) ; shows line numbers on the left side of the buffer
 
+(add-hook 'prog-mode-hook #'linum-mode)
 
 ;;------------------------------------------------------------------------------
 ;; Custom - created when installing plugins
