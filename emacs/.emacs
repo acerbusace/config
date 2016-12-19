@@ -81,7 +81,7 @@
   :pin melpa-stable
   :config
   ;; (global-flycheck-mode) ; enables global-flycheck-mode
-  (add-hook 'prog-mode-hook #'flycheck-mode) ; enable flycheck-mode on any programming language)
+  (add-hook 'prog-mode-hook #'flycheck-mode)) ; enable flycheck-mode on any programming language)
 
 (use-package auto-complete ; adds auto-completion
   :ensure t ; auto install package
