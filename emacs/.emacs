@@ -130,7 +130,9 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; path to python.exe
-(setq python-shell-interpreter "C:/Python27/python.exe")
+(cond
+ ((string-equal system-type "windows-nt") ; Microsoft Windows
+   (setq python-shell-interpreter "C:/Python27/python.exe")))
 
 ;; list all plugins installed
 ;; (with-temp-file "~/.emacs.d/packages.txt" (insert (format "%S" package-activated-list)))
