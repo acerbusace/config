@@ -111,6 +111,11 @@
                       :strike-through t)
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)) ; enable rainbow-delimiters-mode on any programming language
 
+(use-package racket-mode
+  :ensure t ; auto install package
+  :pin melpa
+  )
+
 
 ;;------------------------------------------------------------------------------
 ;; General
@@ -143,6 +148,7 @@
 ;;------------------------------------------------------------------------------
 (global-set-key (kbd "C-!") 'shell) ; opens up the default shell
 
+
 ;;------------------------------------------------------------------------------
 ;; Theme
 ;;------------------------------------------------------------------------------
@@ -156,6 +162,7 @@
 (column-number-mode 1) ; display column/row of cursor in mode-line
 
 (add-hook 'prog-mode-hook #'linum-mode) ; shows line numbers on the left side of the buffer
+
 
 ;;------------------------------------------------------------------------------
 ;; Custom - created when installing plugins
