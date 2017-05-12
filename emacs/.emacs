@@ -17,9 +17,9 @@
 
 ;; loads use-package
 (eval-when-compile
-  (require 'use-package)
-  (require 'diminish) ; if you use :diminish
-  (require 'bind-key)) ; if you use any :bind variant
+  (require 'use-package))
+(require 'diminish) ; if you use :diminish
+(require 'bind-key) ; if you use any :bind variant
 
 ;; install required packages
 ;;---------------------------
@@ -111,10 +111,10 @@
                       :strike-through t)
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)) ; enable rainbow-delimiters-mode on any programming language
 
-(use-package racket-mode
-  :ensure t ; auto install package
-  :pin melpa
-  )
+;; (use-package racket-mode
+  ;; :ensure t ; auto install package
+  ;; :pin melpa
+  ;; )
 
 
 ;;------------------------------------------------------------------------------
@@ -134,19 +134,41 @@
 ;; delete trailing white-space from entire buffer before saving
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; path to python.exe
-(cond
- ((string-equal system-type "windows-nt") ; Microsoft Windows
-   (setq python-shell-interpreter "C:/Python27/python.exe")))
-
 ;; list all plugins installed
 ;; (with-temp-file "~/.emacs.d/packages.txt" (insert (format "%S" package-activated-list)))
+
+;;------------------------------------------------------------------------------
+;; Variables
+;;------------------------------------------------------------------------------
+(setq user-emacs-file "~/.emacs.d/init.el") ; path to 'init.el' file
+(setq user-emacs-file "~/.emacs") ; path to '.emacs' file
+
+
+;;------------------------------------------------------------------------------
+;; Functions
+;;------------------------------------------------------------------------------
+;; opens 'init.el' file in another window
+(defun find-user-init-file ()
+  "Edit the 'user-init-file', in another window."
+  (interactive)
+  (find-file-other-window user-init-file))
+
+;; opens '.emacs' file in another window
+(defun find-user-emacs-file ()
+  "Edit the 'user-emacs-file', in another window."
+  (interactive)
+  (find-file-other-window user-emacs-file))
 
 
 ;;------------------------------------------------------------------------------
 ;; Keybindings
 ;;------------------------------------------------------------------------------
 (global-set-key (kbd "C-!") 'shell) ; opens up the default shell
+
+;; Procedure key-bindings
+;;--------------------------
+(global-set-key (kbd "C-c i") 'find-user-init-file)
+(global-set-key (kbd "C-c e") 'find-user-emacs-file)
 
 
 ;;------------------------------------------------------------------------------
@@ -163,6 +185,12 @@
 
 (add-hook 'prog-mode-hook #'linum-mode) ; shows line numbers on the left side of the buffer
 
+
+;;------------------------------------------------------------------------------
+;; Python
+;;------------------------------------------------------------------------------
+;; disables python native completion setup failed
+(setq python-shell-completion-native-enable nil)
 
 ;;------------------------------------------------------------------------------
 ;; Custom - created when installing plugins
