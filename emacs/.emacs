@@ -28,7 +28,21 @@
   :pin melpa ; dependence (goto-chr) does not exists in melpa stable, so use melpa repository instead
   :diminish undo-tree-mode
   :config
-  (evil-mode 1))
+  (evil-mode 1)
+  ;; adds default emacs behvaiour to the following modes
+  (dolist (mode '(ag-mode
+                  flycheck-error-list-mode
+                  git-rebase-mode))
+    (add-to-list 'evil-emacs-state-modes mode))
+  ;; actives vim hjkl (+ few other) key-bindings for emacs state in evil-mode
+  (evil-add-hjkl-bindings occur-mode-map 'emacs
+    (kbd "/")       'evil-search-forward
+    (kbd "n")       'evil-search-next
+    (kbd "N")       'evil-search-previous
+    (kbd "C-d")     'evil-scroll-down
+    (kbd "C-u")     'evil-scroll-up
+    (kbd "C-w C-w") 'other-window))
+
 
 ;; overhauls search, also includes ivy (completion system)
 (use-package swiper
