@@ -2,39 +2,39 @@
 ;; Packages
 ;;------------------------------------------------------------------------------
 (require 'package)
-(setq package-enable-at-startup nil)
-;; add mepla repositories to the package-archives list
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/")) ; stable melpa package repository
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/")) ; bleeding-edge melpa package repository
+;; add several repositories to the package-archives list
+(add-to-list 'package-archives '("melpa-stable" . "~/.emacs.d/mirror-elpa/stable-melpa/")) ; local stable melpa package repository
+(add-to-list 'package-archives '("melpa" . "~/.emacs.d/mirror-elpa/melpa/")) ; local bleeding-edge melpa package repository
+(add-to-list 'package-archives '("org" . "~/.emacs.d/mirror-elpa/org/")) ; local org package repository
+(add-to-list 'package-archives '("gnu" . "~/.emacs.d/mirror-elpa/gnu/")) ; local gnu package repository
+
+;; Tell emacs where is your personal elisp lib dir
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+
 (package-initialize)
-
-
-;; use-package
-;;-------------
-(unless (package-installed-p 'use-package) ; installs use-package
-  (package-refresh-contents)
-  (package-install 'use-package))
 
 ;; loads use-package
 (eval-when-compile
-  (require 'use-package))
-(require 'diminish) ; if you use :diminish
-(require 'bind-key) ; if you use any :bind variant
+  (load "use-package"))
+(load "diminish")
+(load "bind-key")
 
 ;; install required packages
 ;;---------------------------
+
 (use-package evil ; evil - adds vim-like functionality (vim-mode)
   :ensure t ; auto install package
   :pin melpa ; dependence (goto-chr) does not exists in melpa stable, so use melpa repository instead
   :diminish undo-tree-mode
   :config
   (evil-mode 1)
-  ;; adds default emacs behvaiour to the following modes
+  ;; use default emacs behaviour in the following modes
   (dolist (mode '(ag-mode
                   flycheck-error-list-mode
-                  git-rebase-mode))
+                  git-rebase-mode
+                  neotree-mode))
     (add-to-list 'evil-emacs-state-modes mode))
-  ;; actives vim hjkl (+ few other) key-bindings for emacs state in evil-mode
+  ;; use hjkl and a few other key-bindgins in evil-emacs mode
   (evil-add-hjkl-bindings occur-mode-map 'emacs
     (kbd "/")       'evil-search-forward
     (kbd "n")       'evil-search-next
@@ -43,6 +43,31 @@
     (kbd "C-u")     'evil-scroll-up
     (kbd "C-w C-w") 'other-window))
 
+(use-package neotree ; file tree
+  :ensure t ; auto install package
+  :pin melpa-stable
+  :config
+  (global-set-key [f8] 'neotree-toggle) ; toggle neotree with <F8>
+  ;; (setq neo-theme (if (display-graphic-p) 'arrow 'arrow)) ; changes theme: icons -> window system | arrow -> terminal
+  (setq neo-smart-open t) ; let neotree find current file and jump to node when it opens
+  (setq projectile-switch-project-action 'neotree-projectile-action)) ; actomatically change directory root to project
+
+;; (use-package dashboard ; new dashboard
+  ;; :ensure t ; auto install package
+  ;; :pin melpa-stable
+  ;; :config
+  ;; (dashboard-setup-startup-hook) ; setups dashboard
+  ;; (setq dashboard-banner-logo-title "Welcome to Emacs Dashboard") ; set title
+  ;; value can be
+  ;; 'official which displays the official emacs logo
+  ;; 'logo which displays an alternative emacs logo
+  ;; 1, 2 or 3 which displays one of the text banners
+  ;; "path/to/your/image.png which displays whatever image you would prefer
+  ;; (setq dashboard-startup-banner [VALUE]) ; set banner
+  ;; chooses what options to display
+  ;; (setq dashboard-items '((recents  . 5)
+  ;;                         (bookmarks . 5)
+  ;;                         (projects . 5))))
 
 ;; overhauls search, also includes ivy (completion system)
 (use-package swiper
@@ -106,6 +131,14 @@
   ;;      ac-delay 2)
   (ac-config-default)) ; enables global-auto-completion-mode and set defautls
 
+;; (use-package jedi ; auto-complete backend for Python
+;;   :ensure t ; auto install package
+;;   :pin melpa-stable
+;;   :config
+;;   (add-hook 'python-mode-hook 'jedi:setup) ; setup jedi
+;;   (setq jedi:setup-keys t) ; setup jedi key-bindings
+;;   (setq jedi:complete-on-dot t))
+
 (use-package rainbow-delimiters
   :ensure t ; auto install package
   :pin melpa-stable
@@ -124,11 +157,6 @@
                       :inherit 'error
                       :strike-through t)
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)) ; enable rainbow-delimiters-mode on any programming language
-
-;; (use-package racket-mode
-  ;; :ensure t ; auto install package
-  ;; :pin melpa
-  ;; )
 
 
 ;;------------------------------------------------------------------------------
@@ -151,38 +179,11 @@
 ;; list all plugins installed
 ;; (with-temp-file "~/.emacs.d/packages.txt" (insert (format "%S" package-activated-list)))
 
-;;------------------------------------------------------------------------------
-;; Variables
-;;------------------------------------------------------------------------------
-(setq user-emacs-file "~/.emacs.d/init.el") ; path to 'init.el' file
-(setq user-emacs-file "~/.emacs") ; path to '.emacs' file
-
-
-;;------------------------------------------------------------------------------
-;; Functions
-;;------------------------------------------------------------------------------
-;; opens 'init.el' file in another window
-(defun find-user-init-file ()
-  "Edit the 'user-init-file', in another window."
-  (interactive)
-  (find-file-other-window user-init-file))
-
-;; opens '.emacs' file in another window
-(defun find-user-emacs-file ()
-  "Edit the 'user-emacs-file', in another window."
-  (interactive)
-  (find-file-other-window user-emacs-file))
-
 
 ;;------------------------------------------------------------------------------
 ;; Keybindings
 ;;------------------------------------------------------------------------------
 (global-set-key (kbd "C-!") 'shell) ; opens up the default shell
-
-;; Procedure key-bindings
-;;--------------------------
-(global-set-key (kbd "C-c i") 'find-user-init-file)
-(global-set-key (kbd "C-c e") 'find-user-emacs-file)
 
 
 ;;------------------------------------------------------------------------------
@@ -205,6 +206,35 @@
 ;;------------------------------------------------------------------------------
 ;; disables python native completion setup failed
 (setq python-shell-completion-native-enable nil)
+
+
+;;------------------------------------------------------------------------------
+;; Set Variables (for procedures)
+;;------------------------------------------------------------------------------
+(setq user-emacs-file "~/.emacs.d/init.el") ; path to 'init.el' file
+(setq user-emacs-file "~/.emacs") ; path to '.emacs' file
+;;------------------------------------------------------------------------------
+;; Custom Functions
+;;------------------------------------------------------------------------------
+
+;; opens 'init.el' file in another window
+(defun find-user-init-file ()
+  "Edit the 'user-init-file', in another window."
+  (interactive)
+  (find-file user-init-file))
+
+;; opens '.emacs' file in another window
+(defun find-user-emacs-file ()
+  "Edit the 'user-emacs-file', in another window."
+  (interactive)
+  (find-file user-emacs-file))
+
+
+;;------------------------------------------------------------------------------
+;; Set keybindings (for procedures)
+;;------------------------------------------------------------------------------
+(global-set-key (kbd "C-c i") 'find-user-init-file)
+(global-set-key (kbd "C-c e") 'find-user-emacs-file)
 
 ;;------------------------------------------------------------------------------
 ;; Custom - created when installing plugins
