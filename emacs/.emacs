@@ -2,16 +2,17 @@
 ;; Packages
 ;;------------------------------------------------------------------------------
 (require 'package)
-;; add several repositories to the package-archives list
-(add-to-list 'package-archives '("melpa-stable" . "~/.emacs.d/mirror-elpa/stable-melpa/")) ; local stable melpa package repository
-(add-to-list 'package-archives '("melpa" . "~/.emacs.d/mirror-elpa/melpa/")) ; local bleeding-edge melpa package repository
-(add-to-list 'package-archives '("org" . "~/.emacs.d/mirror-elpa/org/")) ; local org package repository
-(add-to-list 'package-archives '("gnu" . "~/.emacs.d/mirror-elpa/gnu/")) ; local gnu package repository
-
-;; Tell emacs where is your personal elisp lib dir
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-
+(setq package-enable-at-startup nil)
+;; add mepla to the package-archives list
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/")) ; stable melpa package repository
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/")) ; bleeding-edge melpa package repository
 (package-initialize)
+
+;; use-package
+;;-------------
+(unless (package-installed-p 'use-package) ; installs use-package
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 ;; loads use-package
 (eval-when-compile
@@ -21,7 +22,6 @@
 
 ;; install required packages
 ;;---------------------------
-
 (use-package evil ; evil - adds vim-like functionality (vim-mode)
   :ensure t ; auto install package
   :pin melpa ; dependence (goto-chr) does not exists in melpa stable, so use melpa repository instead
@@ -52,22 +52,6 @@
   (setq neo-smart-open t) ; let neotree find current file and jump to node when it opens
   (setq projectile-switch-project-action 'neotree-projectile-action)) ; actomatically change directory root to project
 
-;; (use-package dashboard ; new dashboard
-  ;; :ensure t ; auto install package
-  ;; :pin melpa-stable
-  ;; :config
-  ;; (dashboard-setup-startup-hook) ; setups dashboard
-  ;; (setq dashboard-banner-logo-title "Welcome to Emacs Dashboard") ; set title
-  ;; value can be
-  ;; 'official which displays the official emacs logo
-  ;; 'logo which displays an alternative emacs logo
-  ;; 1, 2 or 3 which displays one of the text banners
-  ;; "path/to/your/image.png which displays whatever image you would prefer
-  ;; (setq dashboard-startup-banner [VALUE]) ; set banner
-  ;; chooses what options to display
-  ;; (setq dashboard-items '((recents  . 5)
-  ;;                         (bookmarks . 5)
-  ;;                         (projects . 5))))
 
 ;; overhauls search, also includes ivy (completion system)
 (use-package swiper
@@ -122,22 +106,14 @@
   ;; (global-flycheck-mode) ; enables global-flycheck-mode
   (add-hook 'prog-mode-hook #'flycheck-mode)) ; enable flycheck-mode on any programming language)
 
-(use-package auto-complete ; adds auto-completion
+(use-package company ; adds auto completion
   :ensure t ; auto install package
   :pin melpa-stable
   :config
-  (require 'auto-complete-config)
-  ;; (setq ac-auto-start 2
-  ;;      ac-delay 2)
-  (ac-config-default)) ; enables global-auto-completion-mode and set defautls
-
-;; (use-package jedi ; auto-complete backend for Python
-;;   :ensure t ; auto install package
-;;   :pin melpa-stable
-;;   :config
-;;   (add-hook 'python-mode-hook 'jedi:setup) ; setup jedi
-;;   (setq jedi:setup-keys t) ; setup jedi key-bindings
-;;   (setq jedi:complete-on-dot t))
+  (add-hook 'after-init-hook 'global-company-mode) ; enables global-company-mode
+  (define-key company-active-map (kbd "\C-n") 'company-select-next)
+  (define-key company-active-map (kbd "\C-p") 'company-select-previous)
+  (define-key company-active-map (kbd "\C-d") 'company-show-doc-buffer))
 
 (use-package rainbow-delimiters
   :ensure t ; auto install package
@@ -157,6 +133,10 @@
                       :inherit 'error
                       :strike-through t)
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)) ; enable rainbow-delimiters-mode on any programming language
+
+(use-package dracula-theme ; dracula theme
+  :ensure t ; auto install package
+  :pin melpa-stable)
 
 
 ;;------------------------------------------------------------------------------
@@ -181,16 +161,8 @@
 
 
 ;;------------------------------------------------------------------------------
-;; Keybindings
-;;------------------------------------------------------------------------------
-(global-set-key (kbd "C-!") 'shell) ; opens up the default shell
-
-
-;;------------------------------------------------------------------------------
 ;; Theme
 ;;------------------------------------------------------------------------------
-(load-theme 'tango-dark) ; loads the specified theme
-
 (menu-bar-mode -1) ; disables the menu bar
 (tool-bar-mode -1) ; disables the tool bar
 (scroll-bar-mode -1) ; disables the scroll bar
@@ -209,12 +181,12 @@
 
 
 ;;------------------------------------------------------------------------------
-;; Set Variables (for procedures)
+;; User defined variables
 ;;------------------------------------------------------------------------------
 (setq user-emacs-file "~/.emacs.d/init.el") ; path to 'init.el' file
 (setq user-emacs-file "~/.emacs") ; path to '.emacs' file
 ;;------------------------------------------------------------------------------
-;; Custom Functions
+;; User defined functions
 ;;------------------------------------------------------------------------------
 
 ;; opens 'init.el' file in another window
@@ -231,8 +203,12 @@
 
 
 ;;------------------------------------------------------------------------------
-;; Set keybindings (for procedures)
+;; User define keybindings
 ;;------------------------------------------------------------------------------
+(global-set-key (kbd "C-!") 'shell) ; opens up the default shell
+
+;; user define function bindings
+;;---------------------------------
 (global-set-key (kbd "C-c i") 'find-user-init-file)
 (global-set-key (kbd "C-c e") 'find-user-emacs-file)
 
