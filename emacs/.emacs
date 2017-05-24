@@ -207,6 +207,10 @@
 ;;------------------------------------------------------------------------------
 (global-set-key (kbd "C-!") 'shell) ; opens up the default shell
 
+(global-set-key (kbd "C-x \\") 'split-window-horizontally) ; splits window horizontally
+(global-set-key (kbd "C-x -") 'split-window-vertically) ; splits window vertically
+
+
 ;; user define function bindings
 ;;---------------------------------
 (global-set-key (kbd "C-c i") 'find-user-init-file)
