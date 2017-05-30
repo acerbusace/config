@@ -8,6 +8,13 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/")) ; bleeding-edge melpa package repository
 (package-initialize)
 
+;; proxy-setup
+;;-------------
+;; (setq url-proxy-services
+;;    '(("no_proxy" . "^\\(localhost\\|10.*\\)")
+;;      ("http" . "proxy.com:8080")
+;;      ("https" . "proxy.com:8080")))
+
 ;; use-package
 ;;-------------
 (unless (package-installed-p 'use-package) ; installs use-package
@@ -19,6 +26,7 @@
   (load "use-package"))
 (load "diminish")
 (load "bind-key")
+
 
 ;; install required packages
 ;;---------------------------
