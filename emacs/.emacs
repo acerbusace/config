@@ -119,6 +119,7 @@
   :pin melpa-stable
   :config
   (add-hook 'after-init-hook 'global-company-mode) ; enables global-company-mode
+  (global-set-key (kbd "C-c SPC") 'company-complete) ; force company completion
   (define-key company-active-map (kbd "\C-n") 'company-select-next)
   (define-key company-active-map (kbd "\C-p") 'company-select-previous)
   (define-key company-active-map (kbd "\C-d") 'company-show-doc-buffer))
@@ -142,9 +143,26 @@
                       :strike-through t)
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)) ; enable rainbow-delimiters-mode on any programming language
 
-(use-package dracula-theme ; dracula theme
+(if (display-graphic-p)
+  (use-package dracula-theme ; dracula theme
+    :ensure t ; auto install package
+    :pin melpa-stable)
+  )
+
+
+(use-package web-mode
   :ensure t ; auto install package
-  :pin melpa-stable)
+  :pin melpa-stable
+  :config
+  (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tpl\\|\\.php\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+  ) ; enable rainbow-delimiters-mode on any programming language
 
 
 ;;------------------------------------------------------------------------------
@@ -218,6 +236,8 @@
 (global-set-key (kbd "C-x \\") 'split-window-horizontally) ; splits window horizontally
 (global-set-key (kbd "C-x -") 'split-window-vertically) ; splits window vertically
 
+(global-set-key (kbd "C-c C-c") 'comment-line) ; comments/uncomments a line
+
 
 ;; user define function bindings
 ;;---------------------------------
@@ -227,3 +247,17 @@
 ;;------------------------------------------------------------------------------
 ;; Custom - created when installing plugins
 ;;------------------------------------------------------------------------------
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (rainbow-delimiters company flycheck projectile counsel swiper neotree evil use-package))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
