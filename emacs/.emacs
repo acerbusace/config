@@ -227,6 +227,15 @@
   (interactive)
   (find-file user-emacs-file))
 
+;; open remote file using tramp
+(defun remote-file ()
+  (interactive)
+  (let ((prefix "/")
+        (join ":")
+        (hostname (read-string "Enter hostname: "))
+        (filename (read-string "Enter path: ")))
+    (find-file (concat prefix hostname join filename))))
+
 
 ;;------------------------------------------------------------------------------
 ;; User define keybindings
@@ -247,17 +256,3 @@
 ;;------------------------------------------------------------------------------
 ;; Custom - created when installing plugins
 ;;------------------------------------------------------------------------------
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (rainbow-delimiters company flycheck projectile counsel swiper neotree evil use-package))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
