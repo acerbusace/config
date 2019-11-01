@@ -89,6 +89,9 @@ filetype plugin indent on " required for vundle
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use Windows System Clipboard
+set clipboard=unnamed
+
 " Sets how many lines of history VIM has to remember
 set history=500
 
@@ -147,13 +150,13 @@ set whichwrap+=<,>,h,l
 " ignore case when searching
 set ignorecase
 
-" when searching try to be smart about cases 
+" use case sensitive searching, if there is atlest 1 capital letter
 set smartcase
 
 " highlight search results
 set hlsearch
 
-" makes search act like search in modern browsers
+" search as you type
 set incsearch 
 
 " disable search highlighting until next search bye pressing <esc>
