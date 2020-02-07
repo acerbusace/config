@@ -1,0 +1,101 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Sections:
+"    -> General
+"    -> VIM user interface
+"    -> Text, tab and indent related
+"    -> Moving around, tabs, windows and buffers
+"    -> Misc
+"    -> ZenCoding
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use Windows System Clipboard
+set clipboard=unnamed
+
+" Sets how many lines of history VIM has to remember
+set history=500
+
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader = ","
+let g:mapleader = ","
+
+" Fast saving
+nmap <leader>w :w!<cr>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Set 7 lines to the cursor - when moving vertically using j/k
+set so=7
+
+" configure backspace so it acts as it should act
+set backspace=eol,start,indent
+
+" ignore case when searching
+set ignorecase
+
+" use case sensitive searching, if there is atlest 1 capital letter
+set smartcase
+
+" highlight search results
+set hlsearch
+
+" search as you type
+set incsearch 
+
+" disable search highlighting until next search bye pressing <esc>
+nnoremap <esc> :noh<return><esc>
+
+" for regular expressions turn magic on
+set magic
+
+" no annoying sound on errors
+set novisualbell
+set tm=500
+
+" add a bit extra margin to the left
+" set foldcolumn=1
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" use spaces instead of tabs
+set expandtab
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Moving around, tabs, windows and buffers
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" smart way to move between windows
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" return to last edit position when opening files (You want this!)
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Misc
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" quickly open a buffer for scribble
+map <leader>q :e ~/buffer<cr>
+
+" quickly open a markdown buffer for scribble
+" map <leader>x :e ~/buffer.md<cr>
+
+" toggle paste mode on and off
+map <leader>pp :setlocal paste!<cr>
+
+
+""""""""""""""""""""""""""""""
+" => ZenCoding
+""""""""""""""""""""""""""""""
+" Enable all functions in all modes
+let g:user_zen_mode='a'
