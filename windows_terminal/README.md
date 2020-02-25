@@ -1,2 +1,2 @@
-# Location
-%APPDATA%\Local\Packages\Microsoft.WindowsTerminal_*\LocalState\
+# Install
+Copy the `profiles.json` to `%APPDATA%\Local\Packages\Microsoft.WindowsTerminal_*\LocalState\`
