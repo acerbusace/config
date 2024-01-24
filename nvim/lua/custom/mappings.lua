@@ -1,16 +1,27 @@
 local M = {}
 
+M.CopilotChat = {
+  plugin = true,
+
+  n = {
+    ["<leader>ce"] = { "<cmd>CopilotChatExplain<cr>", "CopilotChat - Explain code" },
+    ["<leader>ct"] = { "<cmd>CopilotChatTests<cr>", "CopilotChat - Generate tests" },
+    ["<leader>cr"] = { "<cmd>CopilotChatReview<cr>", "CopilotChat - Review code" },
+    ["<leader>cR"] = { "<cmd>CopilotChatRefactor<cr>", "CopilotChat - Refactor code" },
+  },
+}
+
 M.neotest = {
   plugin = true,
 
   n = {
-    ["<leader>tt"] = {
+    ["<leader>tf"] = {
       function()
         require("neotest").run.run(vim.fn.expand("%"))
       end,
       "Run File"
     },
-    ["<leader>tT"] = {
+    ["<leader>tF"] = {
       function()
         require("neotest").run.run(vim.loop.cwd())
       end,
@@ -46,14 +57,6 @@ M.neotest = {
       end,
       "Stop"
     },
-    -- ["<Leader>tr"] = {':lua require("neotest").run.run()<CR>', "Neotest run", opts = { noremap = true, silent = true }},
-    -- ["<Leader>ts"] = {':lua require("neotest").run.stop()<CR>', "Neotest stop", opts = { noremap = true, silent = true }},
-    -- ["<Leader>to"] = {':lua require("neotest").output.open()<CR>', "Neotest output", opts = { noremap = true, silent = true }},
-    -- ["<Leader>tO"] = {':lua require("neotest").output.open({ enter = true })<CR>', "Neotest output detailed", opts = { noremap = true, silent = true }},
-    -- ["<Leader>ti"] = {':lua require("neotest").summary.toggle()<CR>', "Neotest summary", opts = { noremap = true, silent = true }},
-    -- ["<Leader>tf"] = {':lua require("neotest").run.run(vim.fn.expand("%"))<CR>', "Neotest run all tests in file", opts = { noremap = true, silent = true }},
-    -- ["[n"] = {'<cmd>lua require("neotest").jump.prev({ status = "failed" })', "Neotest next", opts = { silent = true }},
-    -- ["]n"] = {'<cmd>lua require("neotest").jump.next({ status = "failed" })', "Neotest previous", opts = { silent = true }},
   },
 }
 
