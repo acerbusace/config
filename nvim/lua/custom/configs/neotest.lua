@@ -1,5 +1,6 @@
 require("neotest").setup({
   adapters = {
-    require("neotest-vim-test"),
+    require("neotest-rspec"),
+    -- require("neotest-vim-test"),
   },
 })
