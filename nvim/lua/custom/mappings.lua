@@ -1,13 +1,50 @@
 local M = {}
 
-M.CopilotChat = {
+-- M.CopilotChat = {
+--   plugin = true,
+--
+--   n = {
+--     ["<leader>ce"] = { "<cmd>CopilotChatExplain<cr>", "CopilotChat - Explain code" },
+--     ["<leader>ct"] = { "<cmd>CopilotChatTests<cr>", "CopilotChat - Generate tests" },
+--     ["<leader>cr"] = { "<cmd>CopilotChatReview<cr>", "CopilotChat - Review code" },
+--     ["<leader>cR"] = { "<cmd>CopilotChatRefactor<cr>", "CopilotChat - Refactor code" },
+--   },
+-- }
+
+M.dap = {
   plugin = true,
 
   n = {
-    ["<leader>ce"] = { "<cmd>CopilotChatExplain<cr>", "CopilotChat - Explain code" },
-    ["<leader>ct"] = { "<cmd>CopilotChatTests<cr>", "CopilotChat - Generate tests" },
-    ["<leader>cr"] = { "<cmd>CopilotChatReview<cr>", "CopilotChat - Review code" },
-    ["<leader>cR"] = { "<cmd>CopilotChatRefactor<cr>", "CopilotChat - Refactor code" },
+    ["<leader>tb"] = {
+      function()
+        require("dap").toggle_breakpoint()
+      end,
+      "DAP - Toggle Breakpoint"
+    },
+    ["<leader>tc"] = {
+      function()
+        require("dap").continue()
+      end,
+      "DAP - Continue Debugging"
+    },
+    ["<leader>t["] = {
+      function()
+        require("dap").step_over()
+      end,
+      "DAP - Step Over"
+    },
+    ["<leader>t]"] = {
+      function()
+        require("dap").setup_into()
+      end,
+      "DAP - Step Into"
+    },
+    ["<leader>ti"] = {
+      function()
+        require("dap").repl.open()
+      end,
+      "DAP - Inspector State"
+    },
   },
 }
 
@@ -32,6 +69,12 @@ M.neotest = {
         require("neotest").run.run()
       end,
       "Run Nearest"
+    },
+    ["<leader>tR"] = {
+      function()
+        require("neotest").run.run({strategy = "dap"})
+      end,
+      "Debug Nearest"
     },
     ["<leader>ts"] = {
       function()
