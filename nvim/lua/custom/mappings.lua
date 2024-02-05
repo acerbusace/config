@@ -9,6 +9,11 @@ M.CopilotChat = {
     ["<leader>cr"] = { "<cmd>CopilotChatReview<cr>", "CopilotChat - Review code" },
     ["<leader>cR"] = { "<cmd>CopilotChatRefactor<cr>", "CopilotChat - Refactor code" },
   },
+
+  v = {
+    ["<leader>cv"] = { ":CopilotChatVisual", "CopilotChat - Open in vertical split" },
+    ["<leader>cx"] = { ":CopilotChatInPlace<cr>", "CopilotChat - Run in-place code" },
+  },
 }
 
 M.dap = {

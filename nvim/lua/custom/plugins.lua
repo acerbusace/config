@@ -84,9 +84,11 @@ local plugins = {
     end
   },
   {
-    "jellydn/CopilotChat.nvim",
+    "CopilotC-Nvim/CopilotChat.nvim",
     lazy = false,
     opts = {
+      debug = false, -- Enable or disable debug mode, the log file will be in ~/.local/state/nvim/CopilotChat.nvim.log
+      disable_extra_info = "no", -- Disable extra information (e.g: system prompt) in the response.
       mode = "split", -- newbuffer or split  , default: newbuffer
       prompts = {
         Explain = "Explain how it works.",
@@ -94,12 +96,10 @@ local plugins = {
         Tests = "Briefly explain how the selected code works, then generate unit tests.",
         Refactor = "Refactor the code to improve clarity and readability.",
       },
+      show_help = "yes", -- Show help text for CopilotChatInPlace, default: yes
     },
     build = function()
-      vim.defer_fn(function()
-        vim.cmd("UpdateRemotePlugins")
-        vim.notify("CopilotChat - Updated remote plugins. Please restart Neovim.")
-      end, 3000)
+      vim.notify("CopilotChat - Please update the remote plugins by running ':UpdateRemotePlugins', then restart Neovim.")
     end,
     event = "VeryLazy",
     keys = {
@@ -107,6 +107,18 @@ local plugins = {
       { "<leader>ct", "<cmd>CopilotChatTests<cr>", desc = "CopilotChat - Generate tests" },
       { "<leader>cr", "<cmd>CopilotChatReview<cr>", desc = "CopilotChat - Review code" },
       { "<leader>cR", "<cmd>CopilotChatRefactor<cr>", desc = "CopilotChat - Refactor code" },
+      {
+        "<leader>cv",
+        ":CopilotChatVisual",
+        mode = "x",
+        desc = "CopilotChat - Open in vertical split",
+      },
+      {
+        "<leader>cx",
+        ":CopilotChatInPlace<cr>",
+        mode = "x",
+        desc = "CopilotChat - Run in-place code",
+      },
     },
   },
   {
