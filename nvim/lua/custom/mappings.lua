@@ -4,14 +4,16 @@ M.CopilotChat = {
   plugin = true,
 
   n = {
+    ["<leader>cb"] = { ":CopilotChatBuffer ", "CopilotChat - Chat with current buffer" },
     ["<leader>ce"] = { "<cmd>CopilotChatExplain<cr>", "CopilotChat - Explain code" },
     ["<leader>ct"] = { "<cmd>CopilotChatTests<cr>", "CopilotChat - Generate tests" },
-    ["<leader>cr"] = { "<cmd>CopilotChatReview<cr>", "CopilotChat - Review code" },
-    ["<leader>cR"] = { "<cmd>CopilotChatRefactor<cr>", "CopilotChat - Refactor code" },
+    ["<leader>cT"] = { "<cmd>CopilotChatVsplitToggle<cr>", "CopilotChat - Toggle Vsplit" },
+    ["<leader>cf"] = { "<cmd>CopilotChatFixDiagnostic<cr>", "CopilotChat - Fix diagnostic" },
+    ["<leader>cr"] = { "<cmd>CopilotChatReset<cr>", "CopilotChat - Reset chat history and clear buffer" },
   },
 
   v = {
-    ["<leader>cv"] = { ":CopilotChatVisual", "CopilotChat - Open in vertical split" },
+    ["<leader>cv"] = { ":CopilotChatVisual ", "CopilotChat - Open in vertical split" },
     ["<leader>cx"] = { ":CopilotChatInPlace<cr>", "CopilotChat - Run in-place code" },
   },
 }
