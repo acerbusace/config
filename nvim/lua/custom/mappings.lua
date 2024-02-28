@@ -10,11 +10,35 @@ M.CopilotChat = {
     ["<leader>cT"] = { "<cmd>CopilotChatVsplitToggle<cr>", "CopilotChat - Toggle Vsplit" },
     ["<leader>cf"] = { "<cmd>CopilotChatFixDiagnostic<cr>", "CopilotChat - Fix diagnostic" },
     ["<leader>cr"] = { "<cmd>CopilotChatReset<cr>", "CopilotChat - Reset chat history and clear buffer" },
+    ["<leader>cq"] = {
+      function()
+        local input = vim.fn.input("Quick Chat: ")
+        if input ~= "" then
+          vim.cmd("CopilotChatBuffer " .. input)
+        end
+      end,
+      "CopilotChat - Quick chat"
+    },
+     -- Show help actions with telescope
+    ["<leader>cH"] = {
+      function()
+        require("CopilotChat.code_actions").show_help_actions()
+      end,
+      "CopilotChat - Help actions"
+    },
+    -- Show prompts actions with telescope
+    ["<leader>cp"] = {
+      function()
+        require("CopilotChat.code_actions").show_prompt_actions()
+      end,
+      "CopilotChat - Help actions"
+    },
   },
 
   v = {
     ["<leader>cv"] = { ":CopilotChatVisual ", "CopilotChat - Open in vertical split" },
     ["<leader>cx"] = { ":CopilotChatInPlace<cr>", "CopilotChat - Run in-place code" },
+    ["<leader>cp"] = { ":lua require('CopilotChat.code_actions').show_prompt_actions(true)<CR>", "CopilotChat - Prompt actions" }
   },
 }
 
