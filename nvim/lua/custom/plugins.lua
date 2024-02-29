@@ -3,6 +3,9 @@ local overrides = require("custom.configs.overrides")
 local plugins = {
   {
     "nvim-treesitter/nvim-treesitter",
+    dependencies = {
+      { "LiadOz/nvim-dap-repl-highlights" }, -- Needs to be loaded first for dap_repl paresr to be found
+    },
     opts = {
       ensure_installed = {
         -- defaults 
@@ -18,9 +21,12 @@ local plugins = {
         "json",
         "yaml",
 
-       -- high level
+        -- debug
+        "dap_repl",
+
+        -- high level
         "ruby",
-        "rbs"
+        "rbs",
       },
     },
   },
@@ -226,7 +232,16 @@ local plugins = {
     keys = {
       { "<leader>tu", function() require("dapui").toggle() end, desc = "DAP UI - Toggle Windows" },
     }
-  }
+  },
+  {
+    "LiadOz/nvim-dap-repl-highlights",
+    dependencies = {
+      { "mfussenegger/nvim-dap" }, -- Needs to be loaded first for dap_repl paresr to be found
+    },
+    config = function()
+      require("nvim-dap-repl-highlights").setup()
+    end,
+  },
 }
 
 return plugins
