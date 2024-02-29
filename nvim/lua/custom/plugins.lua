@@ -44,7 +44,7 @@ local plugins = {
       ensure_installed = {
         "lua-language-server",
         "standardrb",
-        "solargraph"
+        "solargraph",
       },
     },
   },
@@ -214,6 +214,18 @@ local plugins = {
     config = function ()
       require("dap-ruby").setup()
     end
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+    },
+    config = function()
+      require("dapui").setup()
+    end,
+    keys = {
+      { "<leader>tu", function() require("dapui").toggle() end, desc = "DAP UI - Toggle Windows" },
+    }
   }
 }
 

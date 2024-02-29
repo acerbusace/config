@@ -79,6 +79,19 @@ M.dap = {
   },
 }
 
+M.dapui = {
+  plugin = true,
+
+  n = {
+    ["<leader>tu"] = {
+      function()
+        require("dapui").toggle()
+      end,
+      "DAP UI - Toggle Windows"
+    },
+  },
+}
+
 M.neotest = {
   plugin = true,
 
